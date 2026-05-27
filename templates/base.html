@@ -1,0 +1,646 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Homedo - Trusted Home Services</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <!-- Static CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+
+    /* ================= ROOT ================= */
+
+    :root{
+        --primary:#111827;
+        --secondary:#1f2937;
+        --accent:#f59e0b;
+        --light:#f8fafc;
+        --white:#ffffff;
+        --border:#e5e7eb;
+        --text:#374151;
+        --shadow:0 10px 35px rgba(0,0,0,0.08);
+    }
+
+    /* ================= GLOBAL ================= */
+
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
+
+    html{
+        scroll-behavior:smooth;
+    }
+
+    body{
+        background:linear-gradient(135deg,#f5f7ff,#eef2f7);
+        font-family:'Poppins',sans-serif;
+        color:var(--text);
+        overflow-x:hidden;
+    }
+
+    a{
+        text-decoration:none;
+    }
+
+    /* ================= CUSTOM SCROLLBAR ================= */
+
+    ::-webkit-scrollbar{
+        width:8px;
+    }
+
+    ::-webkit-scrollbar-track{
+        background:#f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb{
+        background:#cbd5e1;
+        border-radius:20px;
+    }
+
+    /* ================= NAVBAR ================= */
+
+    .navbar{
+        background:rgba(15,23,42,0.82)!important;
+        backdrop-filter:blur(16px);
+        transition:0.3s ease;
+        padding:14px 0;
+        border-bottom:1px solid rgba(255,255,255,0.06);
+    }
+
+    .navbar-brand{
+        font-size:30px;
+        font-weight:800;
+        color:var(--accent)!important;
+        letter-spacing:0.5px;
+    }
+
+    .navbar-brand i{
+        margin-right:4px;
+    }
+
+    .nav-link{
+        color:#fff!important;
+        font-weight:500;
+        font-size:15px;
+        position:relative;
+        transition:0.3s;
+    }
+
+    .nav-link::after{
+        content:'';
+        position:absolute;
+        left:0;
+        bottom:-5px;
+        width:0%;
+        height:2px;
+        background:var(--accent);
+        transition:0.3s;
+    }
+
+    .nav-link:hover::after{
+        width:100%;
+    }
+
+    .nav-link:hover{
+        color:var(--accent)!important;
+    }
+
+    /* ================= BUTTONS ================= */
+
+    .btn-warning-custom{
+        background:linear-gradient(135deg,#f59e0b,#fbbf24);
+        color:#111;
+        border:none;
+        border-radius:14px;
+        padding:11px 24px;
+        font-weight:700;
+        transition:0.3s;
+        box-shadow:0 10px 20px rgba(245,158,11,0.25);
+    }
+
+    .btn-warning-custom:hover{
+        transform:translateY(-3px);
+        color:#111;
+        box-shadow:0 15px 30px rgba(245,158,11,0.35);
+    }
+
+    .btn-dark-custom{
+        background:linear-gradient(135deg,#111827,#1f2937);
+        color:#fff;
+        border:none;
+        border-radius:14px;
+        padding:11px 22px;
+        font-weight:600;
+        transition:0.3s;
+        box-shadow:0 10px 25px rgba(0,0,0,0.18);
+    }
+
+    .btn-dark-custom:hover{
+        transform:translateY(-3px);
+        color:#fff;
+    }
+
+    /* ================= DROPDOWN ================= */
+
+    .dropdown-menu{
+        border:none;
+        border-radius:18px;
+        padding:12px;
+        box-shadow:0 20px 45px rgba(0,0,0,0.12);
+        overflow:hidden;
+    }
+
+    .dropdown-item{
+        border-radius:10px;
+        padding:10px 14px;
+        font-size:14px;
+        transition:0.2s;
+    }
+
+    .dropdown-item:hover{
+        background:#f3f4f6;
+        transform:translateX(3px);
+    }
+
+    /* ================= ALERTS ================= */
+
+    .alert{
+        border:none;
+        border-radius:16px;
+        padding:15px 18px;
+        box-shadow:var(--shadow);
+    }
+
+    /* ================= MAIN ================= */
+
+    main{
+        min-height:70vh;
+    }
+
+    /* ================= GLASS EFFECT ================= */
+
+    .glass{
+        background:rgba(255,255,255,0.7);
+        backdrop-filter:blur(14px);
+        border:1px solid rgba(255,255,255,0.35);
+        box-shadow:var(--shadow);
+    }
+
+    /* ================= FOOTER ================= */
+
+    footer{
+        background:#0f172a;
+        color:#cbd5e1;
+        margin-top:80px;
+        position:relative;
+        overflow:hidden;
+    }
+
+    footer::before{
+        content:'';
+        position:absolute;
+        top:-120px;
+        right:-120px;
+        width:300px;
+        height:300px;
+        background:rgba(255,255,255,0.03);
+        border-radius:50%;
+    }
+
+    .footer-logo{
+        color:#f59e0b;
+        font-weight:800;
+        font-size:30px;
+    }
+
+    .footer-title{
+        color:#fff;
+        margin-bottom:18px;
+        font-weight:700;
+    }
+
+    .footer-link{
+        color:#cbd5e1;
+        display:block;
+        margin-bottom:10px;
+        transition:0.3s;
+    }
+
+    .footer-link:hover{
+        color:#f59e0b;
+        transform:translateX(4px);
+    }
+
+    .footer-contact i{
+        color:#f59e0b;
+        margin-right:8px;
+    }
+
+    .social-links a{
+        width:42px;
+        height:42px;
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        border-radius:50%;
+        background:rgba(255,255,255,0.08);
+        color:#fff;
+        margin-right:8px;
+        transition:0.3s;
+        font-size:18px;
+    }
+
+    .social-links a:hover{
+        background:#f59e0b;
+        color:#111;
+        transform:translateY(-4px);
+    }
+
+    .footer-bottom{
+        border-top:1px solid rgba(255,255,255,0.08);
+        margin-top:40px;
+        padding-top:20px;
+    }
+
+    /* ================= BACK TO TOP ================= */
+
+    .back-top{
+        position:fixed;
+        right:20px;
+        bottom:20px;
+        width:52px;
+        height:52px;
+        background:#111827;
+        color:#fff;
+        border-radius:50%;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:20px;
+        z-index:999;
+        box-shadow:0 10px 25px rgba(0,0,0,0.2);
+        transition:0.3s;
+    }
+
+    .back-top:hover{
+        transform:translateY(-5px);
+        background:#f59e0b;
+        color:#111;
+    }
+
+    /* ================= RESPONSIVE ================= */
+
+    @media(max-width:991px){
+
+        .navbar{
+            padding:10px 0;
+        }
+
+        .navbar-collapse{
+            margin-top:15px;
+            background:#111827;
+            padding:20px;
+            border-radius:18px;
+        }
+
+        .nav-link{
+            padding:10px 0;
+        }
+
+    }
+
+    @media(max-width:768px){
+
+        .navbar-brand{
+            font-size:25px;
+        }
+
+        footer{
+            text-align:center;
+        }
+
+        .social-links{
+            margin-top:15px;
+        }
+
+    }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+
+    <div class="container">
+
+        <a class="navbar-brand" href="/">
+            <i class="bi bi-house-door-fill"></i> Homedo
+        </a>
+
+        <button class="navbar-toggler border-0 shadow-none"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarContent">
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/">
+                        <i class="bi bi-house"></i> Home
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/about/">
+                        <i class="bi bi-grid"></i> About
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/services/">
+                        <i class="bi bi-tools"></i> Services
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact/">
+                        <i class="bi bi-envelope"></i> Contact
+                    </a>
+                </li>
+
+                {% if user.is_authenticated %}
+
+                <li class="nav-item dropdown ms-lg-3">
+
+                    <a class="btn btn-warning-custom dropdown-toggle"
+                       href="#"
+                       data-bs-toggle="dropdown">
+
+                        <i class="bi bi-person-circle"></i>
+                        {{ user.username }}
+
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+
+                        <li>
+                            <a class="dropdown-item" href="/dashboard/">
+                                <i class="bi bi-speedometer2"></i>
+                                Dashboard
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="/profile/">
+                                <i class="bi bi-person"></i>
+                                Profile
+                            </a>
+                        </li>
+
+                        
+                        <li><hr class="dropdown-divider"></li>
+
+                        <li>
+                            <a class="dropdown-item text-danger" href="/logout/">
+                                <i class="bi bi-box-arrow-right"></i>
+                                Logout
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </li>
+
+                {% else %}
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/login/">
+                        Login
+                    </a>
+                </li>
+
+                <li class="nav-item ms-lg-2">
+                    <a href="/register/" class="btn btn-warning-custom">
+                        Get Started
+                    </a>
+                </li>
+
+                {% endif %}
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>
+
+<!-- ================= ALERT MESSAGES ================= -->
+
+{% if messages %}
+
+<div class="container mt-5 pt-5">
+
+    {% for message in messages %}
+
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+
+        {{ message }}
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert">
+        </button>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endif %}
+
+<!-- ================= MAIN CONTENT ================= -->
+
+<main>
+
+    {% block content %}
+    {% endblock %}
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+
+<footer class="pt-5 pb-4">
+
+    <div class="container">
+
+        <div class="row g-5">
+
+            <!-- FOOTER LEFT -->
+
+            <div class="col-lg-4">
+
+                <h2 class="footer-logo">
+                    <i class="bi bi-house-door-fill"></i> Homedo
+                </h2>
+
+                <p class="mt-3">
+                    Homedo is your trusted platform for professional home services including
+                    plumbing, electrical work, repairs, cleaning and more.
+                </p>
+
+                <div class="social-links mt-4">
+
+                    <a href="#">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+
+                    <a href="#">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+
+                    <a href="#">
+                        <i class="bi bi-twitter-x"></i>
+                    </a>
+
+                    <a href="#">
+                        <i class="bi bi-whatsapp"></i>
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!-- QUICK LINKS -->
+
+            <div class="col-lg-4">
+
+                <h5 class="footer-title">
+                    Quick Links
+                </h5>
+
+                <a href="/" class="footer-link">Home</a>
+
+                <a href="/about/" class="footer-link">About Us</a>
+
+                <a href="/services/" class="footer-link">Services</a>
+
+                <a href="/contact/" class="footer-link">Contact</a>
+
+                <a href="/register/" class="footer-link">Create Account</a>
+
+            </div>
+
+            <!-- CONTACT -->
+
+            <div class="col-lg-4">
+
+                <h5 class="footer-title">
+                    Contact Information
+                </h5>
+
+                <p class="footer-contact">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    Pune, Maharashtra, India
+                </p>
+
+                <p class="footer-contact">
+                    <i class="bi bi-envelope-fill"></i>
+                    homedo@gmail.com
+                </p>
+
+                <p class="footer-contact">
+                    <i class="bi bi-telephone-fill"></i>
+                    +91 9876543210
+                </p>
+
+                <p class="footer-contact">
+                    <i class="bi bi-clock-fill"></i>
+                    24×7 Customer Support
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- FOOTER BOTTOM -->
+
+        <div class="footer-bottom text-center">
+
+            <small>
+                © 2026 <span class="text-warning">Homedo</span>.
+                All Rights Reserved.
+            </small>
+
+        </div>
+
+    </div>
+
+</footer>
+
+<!-- ================= BACK TO TOP ================= -->
+
+<a href="#" class="back-top">
+    <i class="bi bi-arrow-up"></i>
+</a>
+
+<!-- ================= BOOTSTRAP JS ================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- ================= NAVBAR SCROLL EFFECT ================= -->
+
+<script>
+
+window.addEventListener('scroll', function(){
+
+    const navbar = document.querySelector('.navbar');
+
+    if(window.scrollY > 40){
+        navbar.style.background = "rgba(15,23,42,0.95)";
+        navbar.style.boxShadow = "0 10px 30px rgba(0,0,0,0.18)";
+    }
+
+    else{
+        navbar.style.background = "rgba(15,23,42,0.82)";
+        navbar.style.boxShadow = "none";
+    }
+
+});
+
+</script>
+
+</body>
+
+</html>

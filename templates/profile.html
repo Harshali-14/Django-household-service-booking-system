@@ -1,0 +1,654 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<style>
+
+/* ================= GLOBAL ================= */
+
+body{
+    background:#f4f7fb;
+    font-family:'Segoe UI',sans-serif;
+    overflow-x:hidden;
+}
+
+/* ================= HERO ================= */
+
+.profile-hero{
+    position:relative;
+    padding:140px 20px 120px;
+    background:
+    linear-gradient(135deg,#111827,#1f2937);
+    color:white;
+    overflow:hidden;
+}
+
+.profile-hero::before{
+    content:'';
+    position:absolute;
+    width:450px;
+    height:450px;
+    background:rgba(255,255,255,0.04);
+    border-radius:50%;
+    top:-120px;
+    right:-120px;
+}
+
+.profile-hero::after{
+    content:'';
+    position:absolute;
+    width:280px;
+    height:280px;
+    background:rgba(255,255,255,0.03);
+    border-radius:50%;
+    bottom:-100px;
+    left:-80px;
+}
+
+.hero-content{
+    position:relative;
+    z-index:2;
+    text-align:center;
+}
+
+.hero-badge{
+    display:inline-block;
+    background:rgba(255,255,255,0.12);
+    padding:10px 22px;
+    border-radius:50px;
+    font-size:13px;
+    font-weight:700;
+    backdrop-filter:blur(10px);
+}
+
+.hero-title{
+    font-size:62px;
+    font-weight:900;
+    margin-top:24px;
+    line-height:1.05;
+    letter-spacing:-2px;
+}
+
+.hero-subtitle{
+    max-width:760px;
+    margin:22px auto 0;
+    color:#d1d5db;
+    font-size:18px;
+    line-height:1.8;
+}
+
+/* ================= PROFILE WRAPPER ================= */
+
+.profile-wrapper{
+    margin-top:-80px;
+    position:relative;
+    z-index:10;
+    padding-bottom:90px;
+}
+
+/* ================= SIDEBAR ================= */
+
+.profile-sidebar{
+    background:rgba(255,255,255,0.82);
+    backdrop-filter:blur(16px);
+    border-radius:32px;
+    padding:40px 30px;
+    text-align:center;
+    box-shadow:0 25px 60px rgba(0,0,0,0.1);
+    border:1px solid rgba(255,255,255,0.4);
+}
+
+/* AVATAR */
+
+.avatar{
+    width:140px;
+    height:140px;
+    border-radius:50%;
+    margin:auto;
+    background:
+    linear-gradient(135deg,#111827,#374151);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:52px;
+    font-weight:900;
+    box-shadow:0 18px 40px rgba(0,0,0,0.25);
+    position:relative;
+}
+
+.online-dot{
+    position:absolute;
+    width:22px;
+    height:22px;
+    background:#22c55e;
+    border:4px solid white;
+    border-radius:50%;
+    bottom:12px;
+    right:12px;
+}
+
+.profile-name{
+    font-size:30px;
+    font-weight:900;
+    margin-top:24px;
+}
+
+.profile-username{
+    color:#6b7280;
+    font-size:15px;
+}
+
+.profile-badge{
+    display:inline-block;
+    margin-top:16px;
+    background:#eff6ff;
+    color:#2563eb;
+    padding:10px 18px;
+    border-radius:50px;
+    font-size:13px;
+    font-weight:700;
+}
+
+/* STATS */
+
+.profile-stats{
+    margin-top:35px;
+}
+
+.stat-item{
+    background:#f8fafc;
+    border-radius:20px;
+    padding:18px;
+    margin-bottom:16px;
+}
+
+.stat-item h4{
+    font-size:26px;
+    font-weight:900;
+    margin-bottom:5px;
+}
+
+.stat-item p{
+    color:#6b7280;
+    margin:0;
+    font-size:14px;
+}
+
+/* ================= MAIN CARD ================= */
+
+.profile-main{
+    background:white;
+    border-radius:36px;
+    padding:45px;
+    box-shadow:0 30px 70px rgba(0,0,0,0.08);
+    border:1px solid #eef2f7;
+}
+
+/* TITLE */
+
+.section-heading{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:40px;
+}
+
+.section-heading h2{
+    font-size:36px;
+    font-weight:900;
+    margin:0;
+}
+
+.section-heading p{
+    color:#6b7280;
+    margin-top:8px;
+}
+
+/* FORM */
+
+.form-label{
+    font-weight:700;
+    margin-bottom:10px;
+    color:#111827;
+}
+
+.custom-input{
+    width:100%;
+    border:none;
+    background:#f8fafc;
+    border-radius:18px;
+    padding:16px 18px;
+    font-size:15px;
+    margin-bottom:24px;
+    outline:none;
+    border:2px solid transparent;
+    transition:0.3s;
+}
+
+.custom-input:focus{
+    border-color:#111827;
+    background:white;
+    box-shadow:0 10px 25px rgba(0,0,0,0.05);
+}
+
+textarea.custom-input{
+    resize:none;
+}
+
+/* BUTTONS */
+
+.action-buttons{
+    display:flex;
+    gap:14px;
+    margin-top:10px;
+}
+
+.btn-dark-custom{
+    flex:1;
+    border:none;
+    padding:18px;
+    border-radius:18px;
+    background:
+    linear-gradient(135deg,#111827,#374151);
+    color:white;
+    font-weight:800;
+    text-decoration:none;
+    text-align:center;
+    transition:0.3s;
+}
+
+.btn-dark-custom:hover{
+    transform:translateY(-4px);
+    color:white;
+}
+
+.btn-light-custom{
+    flex:1;
+    border:2px solid #111827;
+    padding:18px;
+    border-radius:18px;
+    background:white;
+    color:#111827;
+    font-weight:800;
+    text-decoration:none;
+    text-align:center;
+    transition:0.3s;
+}
+
+.btn-light-custom:hover{
+    background:#111827;
+    color:white;
+}
+
+/* INFO GRID */
+
+.quick-info{
+    margin-top:45px;
+}
+
+.info-card{
+    background:#f8fafc;
+    border-radius:22px;
+    padding:24px;
+    height:100%;
+}
+
+.info-card i{
+    font-size:26px;
+    color:#111827;
+}
+
+.info-card h5{
+    margin-top:18px;
+    font-weight:800;
+}
+
+.info-card p{
+    color:#6b7280;
+    margin-top:8px;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:768px){
+
+    .hero-title{
+        font-size:42px;
+    }
+
+    .profile-main{
+        padding:28px;
+    }
+
+    .section-heading{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .action-buttons{
+        flex-direction:column;
+    }
+
+}
+
+</style>
+
+<!-- ================= HERO ================= -->
+
+<section class="profile-hero">
+
+<div class="container">
+
+<div class="hero-content">
+
+<span class="hero-badge">
+Account Settings
+</span>
+
+<h1 class="hero-title">
+My Profile
+</h1>
+
+<p class="hero-subtitle">
+Manage your personal details, bookings,
+security, and account preferences from one place.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= PROFILE ================= -->
+
+<section class="profile-wrapper">
+
+<div class="container">
+
+<div class="row g-4">
+
+<!-- ================= SIDEBAR ================= -->
+
+<div class="col-lg-4">
+
+<div class="profile-sidebar">
+
+<div class="avatar">
+
+{{ user.username|first|upper }}
+
+<div class="online-dot"></div>
+
+</div>
+
+<h3 class="profile-name">
+{{ user.first_name }} {{ user.last_name }}
+</h3>
+
+<p class="profile-username">
+@{{ user.username }}
+</p>
+
+<div class="profile-badge">
+Verified Customer
+</div>
+
+<!-- STATS -->
+
+<div class="profile-stats">
+
+<div class="stat-item">
+<h4>24</h4>
+<p>Total Bookings</p>
+</div>
+
+<div class="stat-item">
+<h4>4.9★</h4>
+<p>Customer Rating</p>
+</div>
+
+<div class="stat-item">
+<h4>12</h4>
+<p>Saved Services</p>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= MAIN PROFILE ================= -->
+
+<div class="col-lg-8">
+
+<div class="profile-main">
+
+<div class="section-heading">
+
+<div>
+
+<h2>
+Profile Information
+</h2>
+
+<p>
+Update your personal information and preferences
+</p>
+
+</div>
+
+<i class="bi bi-person-circle"
+style="font-size:50px;color:#111827;"></i>
+
+</div>
+
+<form method="POST">
+
+{% csrf_token %}
+
+<div class="row">
+
+<!-- FIRST NAME -->
+
+<div class="col-md-6">
+
+<label class="form-label">
+<i class="bi bi-person"></i>
+First Name
+</label>
+
+<input type="text"
+name="first_name"
+class="custom-input"
+value="{{ user.first_name }}"
+placeholder="Enter first name">
+
+</div>
+
+<!-- EMAIL -->
+
+<div class="col-md-6">
+
+<label class="form-label">
+<i class="bi bi-envelope"></i>
+Email Address
+</label>
+
+<input type="email"
+name="email"
+class="custom-input"
+value="{{ user.email }}"
+placeholder="Enter email">
+
+</div>
+
+<!-- PHONE -->
+
+<div class="col-md-6">
+
+<label class="form-label">
+<i class="bi bi-telephone"></i>
+Phone Number
+</label>
+
+<input type="tel"
+name="phone"
+class="custom-input"
+value="{{ user.profile.phone|default_if_none:'' }}"
+placeholder="Enter phone number">
+
+</div>
+
+<!-- USERNAME -->
+
+<div class="col-md-6">
+
+<label class="form-label">
+<i class="bi bi-at"></i>
+Username
+</label>
+
+<input type="text"
+class="custom-input"
+value="{{ user.username }}"
+disabled>
+
+</div>
+
+<!-- LOCATION -->
+
+<div class="col-md-6">
+
+<label class="form-label">
+<i class="bi bi-geo-alt"></i>
+Location
+</label>
+
+<input type="text"
+class="custom-input"
+value="Pune, Maharashtra"
+disabled>
+
+</div>
+
+<!-- ADDRESS -->
+
+<div class="col-12">
+
+<label class="form-label">
+<i class="bi bi-house"></i>
+Address
+</label>
+
+<textarea name="address"
+class="custom-input"
+rows="4"
+placeholder="Enter your address">{{ user.profile.address|default_if_none:'' }}</textarea>
+
+</div>
+
+</div>
+
+<!-- BUTTONS -->
+
+<div class="action-buttons">
+
+<button type="submit" class="btn-dark-custom">
+
+<i class="bi bi-check-circle"></i>
+Update Profile
+
+</button>
+
+<a href="/dashboard/" class="btn-light-custom">
+
+<i class="bi bi-speedometer2"></i>
+Dashboard
+
+</a>
+
+<a href="/logout/" class="btn-light-custom">
+
+<i class="bi bi-box-arrow-right"></i>
+Logout
+
+</a>
+
+</div>
+
+</form>
+
+<!-- QUICK INFO -->
+
+<div class="quick-info">
+
+<div class="row g-4">
+
+<div class="col-md-4">
+
+<div class="info-card">
+
+<i class="bi bi-shield-check"></i>
+
+<h5>Secure Account</h5>
+
+<p>
+Your account is protected and verified.
+</p>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="info-card">
+
+<i class="bi bi-clock-history"></i>
+
+<h5>Recent Activity</h5>
+
+<p>
+Track your latest bookings and services.
+</p>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="info-card">
+
+<i class="bi bi-stars"></i>
+
+<h5>Premium Support</h5>
+
+<p>
+Priority customer assistance anytime.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+{% endblock %}

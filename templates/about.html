@@ -1,0 +1,691 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+/* ================= GLOBAL ================= */
+
+body{
+    background:#f5f7fb;
+    font-family:'Segoe UI',sans-serif;
+    overflow-x:hidden;
+}
+
+/* ================= HERO ================= */
+
+.about-hero{
+    position:relative;
+    padding:140px 20px 120px;
+    background:
+    linear-gradient(135deg,#111827,#1f2937);
+    color:white;
+    overflow:hidden;
+}
+
+.about-hero::before{
+    content:'';
+    position:absolute;
+    width:500px;
+    height:500px;
+    background:rgba(255,255,255,0.05);
+    border-radius:50%;
+    top:-150px;
+    right:-120px;
+}
+
+.about-hero::after{
+    content:'';
+    position:absolute;
+    width:300px;
+    height:300px;
+    background:rgba(255,255,255,0.04);
+    border-radius:50%;
+    bottom:-100px;
+    left:-80px;
+}
+
+.hero-content{
+    position:relative;
+    z-index:2;
+    text-align:center;
+}
+
+.hero-badge{
+    display:inline-block;
+    background:rgba(255,255,255,0.12);
+    padding:10px 20px;
+    border-radius:50px;
+    font-size:13px;
+    font-weight:700;
+    backdrop-filter:blur(10px);
+}
+
+.hero-title{
+    font-size:68px;
+    font-weight:900;
+    margin-top:24px;
+    line-height:1.05;
+    letter-spacing:-2px;
+}
+
+.hero-subtitle{
+    max-width:850px;
+    margin:24px auto 0;
+    color:#d1d5db;
+    font-size:18px;
+    line-height:1.9;
+}
+
+/* ================= FLOATING STATS ================= */
+
+.floating-stats{
+    margin-top:-60px;
+    position:relative;
+    z-index:10;
+}
+
+.stats-wrapper{
+    background:white;
+    border-radius:30px;
+    padding:35px;
+    box-shadow:0 25px 60px rgba(0,0,0,0.1);
+}
+
+.stat-box{
+    text-align:center;
+}
+
+.stat-box h2{
+    font-size:42px;
+    font-weight:900;
+    color:#111827;
+}
+
+.stat-box p{
+    color:#6b7280;
+    margin-top:6px;
+}
+
+/* ================= SECTION ================= */
+
+.section{
+    padding:110px 0;
+}
+
+.section-title{
+    text-align:center;
+    margin-bottom:70px;
+}
+
+.section-title span{
+    color:#2563eb;
+    font-weight:700;
+    font-size:14px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+.section-title h2{
+    font-size:52px;
+    font-weight:900;
+    margin-top:10px;
+}
+
+.section-title p{
+    color:#6b7280;
+    max-width:700px;
+    margin:16px auto 0;
+    line-height:1.8;
+}
+
+/* ================= GLASS CARD ================= */
+
+.glass-card{
+    background:rgba(255,255,255,0.8);
+    backdrop-filter:blur(16px);
+    border-radius:30px;
+    padding:35px;
+    height:100%;
+    border:1px solid rgba(255,255,255,0.4);
+    box-shadow:0 20px 45px rgba(0,0,0,0.06);
+    transition:0.35s;
+}
+
+.glass-card:hover{
+    transform:translateY(-10px);
+    box-shadow:0 30px 70px rgba(0,0,0,0.1);
+}
+
+/* ================= ICON ================= */
+
+.card-icon{
+    width:70px;
+    height:70px;
+    border-radius:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    background:
+    linear-gradient(135deg,#111827,#374151);
+    color:white;
+    margin-bottom:22px;
+}
+
+.glass-card h4{
+    font-size:26px;
+    font-weight:800;
+    margin-bottom:14px;
+}
+
+.glass-card p{
+    color:#6b7280;
+    line-height:1.8;
+}
+
+/* ================= TIMELINE ================= */
+
+.timeline{
+    position:relative;
+    max-width:1000px;
+    margin:auto;
+}
+
+.timeline::before{
+    content:'';
+    position:absolute;
+    width:4px;
+    background:#dbeafe;
+    top:0;
+    bottom:0;
+    left:50%;
+    transform:translateX(-50%);
+}
+
+.timeline-item{
+    position:relative;
+    width:50%;
+    padding:30px;
+}
+
+.timeline-item.left{
+    left:0;
+}
+
+.timeline-item.right{
+    left:50%;
+}
+
+.timeline-card{
+    background:white;
+    border-radius:24px;
+    padding:28px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.06);
+}
+
+.timeline-dot{
+    position:absolute;
+    top:45px;
+    right:-12px;
+    width:24px;
+    height:24px;
+    border-radius:50%;
+    background:#2563eb;
+    border:5px solid white;
+}
+
+.timeline-item.right .timeline-dot{
+    left:-12px;
+}
+
+/* ================= FEATURES ================= */
+
+.feature-card{
+    background:white;
+    border-radius:26px;
+    padding:30px;
+    text-align:center;
+    height:100%;
+    transition:0.3s;
+    box-shadow:0 10px 35px rgba(0,0,0,0.05);
+}
+
+.feature-card:hover{
+    transform:translateY(-10px);
+}
+
+.feature-icon{
+    width:80px;
+    height:80px;
+    margin:auto;
+    border-radius:22px;
+    background:
+    linear-gradient(135deg,#111827,#374151);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:30px;
+    margin-bottom:22px;
+}
+
+.feature-card h5{
+    font-size:22px;
+    font-weight:800;
+}
+
+.feature-card p{
+    color:#6b7280;
+    margin-top:10px;
+}
+
+/* ================= CTA ================= */
+
+.cta-section{
+    margin-top:80px;
+    background:
+    linear-gradient(135deg,#111827,#1f2937);
+    border-radius:40px;
+    padding:90px 40px;
+    text-align:center;
+    color:white;
+    box-shadow:0 30px 70px rgba(0,0,0,0.18);
+}
+
+.cta-title{
+    font-size:56px;
+    font-weight:900;
+}
+
+.cta-text{
+    max-width:700px;
+    margin:20px auto 0;
+    color:#d1d5db;
+    line-height:1.8;
+}
+
+.cta-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    margin-top:35px;
+    background:white;
+    color:#111827;
+    padding:18px 34px;
+    border-radius:18px;
+    text-decoration:none;
+    font-weight:800;
+    transition:0.3s;
+}
+
+.cta-btn:hover{
+    transform:translateY(-4px);
+    color:#111827;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:768px){
+
+    .hero-title{
+        font-size:42px;
+    }
+
+    .section-title h2{
+        font-size:36px;
+    }
+
+    .cta-title{
+        font-size:38px;
+    }
+
+    .timeline::before{
+        left:20px;
+    }
+
+    .timeline-item{
+        width:100%;
+        left:0 !important;
+        padding-left:60px;
+    }
+
+    .timeline-dot{
+        left:8px !important;
+    }
+
+}
+
+</style>
+
+<!-- ================= HERO ================= -->
+
+<section class="about-hero">
+
+<div class="container">
+
+<div class="hero-content">
+
+<span class="hero-badge">
+India's Modern Home Service Platform
+</span>
+
+<h1 class="hero-title">
+About Homedo
+</h1>
+
+<p class="hero-subtitle">
+Homedo connects households with trusted professionals for cleaning,
+repair, plumbing, painting, appliance maintenance, and every essential
+home service — delivered with speed, trust, and convenience.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= FLOATING STATS ================= -->
+
+<div class="container floating-stats">
+
+<div class="stats-wrapper">
+
+<div class="row g-4">
+
+<div class="col-md-3">
+<div class="stat-box">
+<h2>10K+</h2>
+<p>Happy Customers</p>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="stat-box">
+<h2>500+</h2>
+<p>Verified Experts</p>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="stat-box">
+<h2>1K+</h2>
+<p>Bookings Daily</p>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="stat-box">
+<h2>4.9★</h2>
+<p>Customer Rating</p>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= WHO WE ARE ================= -->
+
+<section class="section">
+
+<div class="container">
+
+<div class="section-title">
+
+<span>Who We Are</span>
+
+<h2>
+Built For Modern Homes
+</h2>
+
+<p>
+A premium home service ecosystem focused on reliability,
+speed, and customer satisfaction.
+</p>
+
+</div>
+
+<div class="row g-4">
+
+<div class="col-lg-6">
+
+<div class="glass-card">
+
+<div class="card-icon">
+<i class="fa-solid fa-house"></i>
+</div>
+
+<h4>About Homedo</h4>
+
+<p>
+Homedo bridges the gap between customers and skilled service
+professionals using technology-driven booking and transparent
+pricing systems.
+</p>
+
+<p>
+Our goal is to remove the hassle of finding trusted experts
+for home services while ensuring a seamless experience.
+</p>
+
+</div>
+
+</div>
+
+<div class="col-lg-6">
+
+<div class="glass-card">
+
+<div class="card-icon">
+<i class="fa-solid fa-bullseye"></i>
+</div>
+
+<h4>Mission & Vision</h4>
+
+<p>
+Our mission is to make home services simple, affordable,
+and accessible for every household in India.
+</p>
+
+<p>
+We envision Homedo becoming India's most trusted and
+innovative home service platform.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= TIMELINE ================= -->
+
+<section class="section pt-0">
+
+<div class="container">
+
+<div class="section-title">
+
+<span>How It Works</span>
+
+<h2>
+Simple Booking Process
+</h2>
+
+</div>
+
+<div class="timeline">
+
+<div class="timeline-item left">
+
+<div class="timeline-card">
+
+<h4>Choose Service</h4>
+
+<p>
+Browse electricians, plumbers, cleaners,
+painters and more.
+</p>
+
+</div>
+
+<div class="timeline-dot"></div>
+
+</div>
+
+<div class="timeline-item right">
+
+<div class="timeline-card">
+
+<h4>Book Instantly</h4>
+
+<p>
+Select time slots and confirm your booking
+within seconds.
+</p>
+
+</div>
+
+<div class="timeline-dot"></div>
+
+</div>
+
+<div class="timeline-item left">
+
+<div class="timeline-card">
+
+<h4>Get Expert Service</h4>
+
+<p>
+Verified professionals arrive at your doorstep
+to complete the work efficiently.
+</p>
+
+</div>
+
+<div class="timeline-dot"></div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= FEATURES ================= -->
+
+<section class="section pt-0">
+
+<div class="container">
+
+<div class="section-title">
+
+<span>Why Choose Us</span>
+
+<h2>
+Premium Service Experience
+</h2>
+
+</div>
+
+<div class="row g-4">
+
+<div class="col-lg-4 col-md-6">
+
+<div class="feature-card">
+
+<div class="feature-icon">
+<i class="fa-solid fa-shield-halved"></i>
+</div>
+
+<h5>Trusted Professionals</h5>
+
+<p>
+All service providers are verified and experienced.
+</p>
+
+</div>
+
+</div>
+
+<div class="col-lg-4 col-md-6">
+
+<div class="feature-card">
+
+<div class="feature-icon">
+<i class="fa-solid fa-bolt"></i>
+</div>
+
+<h5>Fast Booking</h5>
+
+<p>
+Book home services within minutes anytime.
+</p>
+
+</div>
+
+</div>
+
+<div class="col-lg-4 col-md-6">
+
+<div class="feature-card">
+
+<div class="feature-icon">
+<i class="fa-solid fa-wallet"></i>
+</div>
+
+<h5>Transparent Pricing</h5>
+
+<p>
+No hidden charges with clear pricing system.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= CTA ================= -->
+
+<section class="container">
+
+<div class="cta-section">
+
+<h2 class="cta-title">
+Experience Hassle-Free Home Services
+</h2>
+
+<p class="cta-text">
+Join thousands of customers who trust Homedo
+for premium home services every day.
+</p>
+
+<a href="{% url 'services' %}" class="cta-btn">
+
+Explore Services
+
+<i class="fa-solid fa-arrow-right"></i>
+
+</a>
+
+</div>
+
+</section>
+
+{% endblock %}

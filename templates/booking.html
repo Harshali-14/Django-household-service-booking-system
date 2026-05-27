@@ -1,0 +1,240 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+
+/* ================= HERO ================= */
+.booking-hero{
+    padding:100px 20px 40px;
+    text-align:center;
+    background: radial-gradient(circle at top left,#ffffff,#eef2ff);
+}
+
+.booking-hero h1{
+    font-size:50px;
+    font-weight:900;
+}
+
+.booking-hero p{
+    color:#666;
+    font-size:17px;
+}
+
+/* ================= STEPS ================= */
+.steps{
+    display:flex;
+    justify-content:center;
+    gap:40px;
+    margin:30px 0 50px;
+    flex-wrap:wrap;
+}
+
+.step{
+    text-align:center;
+    font-weight:600;
+    color:#444;
+    font-size:14px;
+}
+
+.step span{
+    display:inline-block;
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:#111;
+    color:#fff;
+    line-height:38px;
+    margin-bottom:6px;
+    font-weight:700;
+    box-shadow:0 10px 20px rgba(0,0,0,0.15);
+}
+
+/* ================= CARD ================= */
+.booking-card{
+    background:rgba(255,255,255,0.8);
+    backdrop-filter: blur(10px);
+    border-radius:26px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.10);
+    border:1px solid rgba(255,255,255,0.4);
+}
+
+/* ================= FORM ================= */
+.form-section{
+    padding:45px;
+}
+
+.form-title{
+    font-size:28px;
+    font-weight:900;
+    margin-bottom:20px;
+}
+
+label{
+    font-weight:600;
+    font-size:13px;
+    color:#333;
+}
+
+/* INPUTS */
+.form-control, .form-select{
+    border-radius:12px;
+    padding:12px 14px;
+    border:1px solid #e5e7eb;
+}
+
+/* ================= PRICE BOX ================= */
+.price-box{
+    background:#f8fafc;
+    border:1px solid #eee;
+    padding:12px;
+    border-radius:10px;
+    font-weight:700;
+    margin-bottom:15px;
+}
+
+/* ================= BUTTON ================= */
+.btn-book{
+    background:linear-gradient(135deg,#111,#333);
+    color:#fff;
+    padding:14px;
+    border-radius:14px;
+    font-weight:800;
+    border:none;
+    width:100%;
+}
+
+/* ================= SIDE ================= */
+.side-box{
+    background:linear-gradient(135deg,#111,#2b2b2b);
+    color:#fff;
+    padding:45px;
+}
+
+.side-item{
+    margin-top:12px;
+    color:#ddd;
+    font-size:14px;
+}
+
+</style>
+
+<!-- HERO -->
+<section class="booking-hero">
+    <h1>Book Your Service</h1>
+    <p>Get verified professionals at your doorstep in minutes</p>
+</section>
+
+<!-- STEPS -->
+<div class="steps">
+    <div class="step"><span>1</span>Select</div>
+    <div class="step"><span>2</span>Details</div>
+    <div class="step"><span>3</span>Confirm</div>
+</div>
+
+<!-- FORM -->
+<section class="container pb-5">
+
+<div class="row justify-content-center">
+<div class="col-lg-10">
+
+<div class="row booking-card">
+
+<!-- FORM -->
+<div class="col-lg-7 form-section">
+
+    <div class="form-title">Booking Details</div>
+
+    <!-- PRICE SHOW -->
+    {% if selected_service %}
+    <div class="price-box">
+        Estimated Price: ₹{{ calculated_price }}
+    </div>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <!-- AUTO FILL USER -->
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label>Full Name</label>
+                <input type="text"
+                       name="full_name"
+                       class="form-control"
+                       value="{{ user.get_full_name|default:user.username }}"
+                       required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Phone</label>
+                <input type="tel"
+                       name="phone"
+                       class="form-control"
+                       value="{{ user.profile.phone|default:'' }}"
+                       required>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label>Email</label>
+            <input type="email"
+                   name="email"
+                   class="form-control"
+                   value="{{ user.email }}"
+                   required>
+        </div>
+
+        <div class="mb-3">
+            <label>Service</label>
+            <select name="service" class="form-select">
+                {% for s in services %}
+                <option value="{{ s.id }}"
+                    {% if selected_service and selected_service.id == s.id %}selected{% endif %}>
+                    {{ s.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <textarea name="address" class="form-control" rows="3">
+{{ profile.address|default:'' }}
+</textarea>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label>Date</label>
+                <input type="date" name="date" class="form-control">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Time</label>
+                <input type="time" name="time" class="form-control">
+            </div>
+        </div>
+
+        <button class="btn-book">Confirm Booking</button>
+    </form>
+
+</div>
+
+<!-- SIDE -->
+<div class="col-lg-5 side-box">
+
+    <h3>Why Homedo?</h3>
+
+    <div class="side-item">✔ Verified Professionals</div>
+    <div class="side-item">⚡ Fast service</div>
+    <div class="side-item">💰 Transparent pricing</div>
+    <div class="side-item">⭐ High rating experts</div>
+    <div class="side-item">📞 24/7 support</div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,843 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+/* ================= ROOT ================= */
+
+:root{
+    --primary:#111c35;
+    --secondary:#1d4ed8;
+    --dark:#0f172a;
+    --light:#f8fafc;
+    --text:#64748b;
+    --white:#ffffff;
+}
+
+/* ================= GLOBAL ================= */
+
+body{
+    background:#f1f5f9;
+    font-family:'Segoe UI',sans-serif;
+}
+
+/* ================= HERO ================= */
+
+.services-hero{
+    position:relative;
+    padding:120px 0 140px;
+    overflow:hidden;
+    background:
+    linear-gradient(135deg,#0f172a,#1e293b);
+    color:white;
+}
+
+.services-hero::before{
+    content:'';
+    position:absolute;
+    width:600px;
+    height:600px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.05);
+    top:-250px;
+    right:-150px;
+}
+
+.services-hero::after{
+    content:'';
+    position:absolute;
+    width:350px;
+    height:350px;
+    border-radius:50%;
+    background:rgba(59,130,246,0.12);
+    bottom:-150px;
+    left:-80px;
+}
+
+.hero-content{
+    position:relative;
+    z-index:2;
+}
+
+.hero-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 18px;
+    background:rgba(255,255,255,0.1);
+    border:1px solid rgba(255,255,255,0.15);
+    border-radius:50px;
+    font-size:13px;
+    font-weight:700;
+    backdrop-filter:blur(10px);
+}
+
+.hero-title{
+    font-size:68px;
+    font-weight:900;
+    line-height:1.05;
+    margin-top:26px;
+    max-width:750px;
+}
+
+.hero-subtitle{
+    font-size:18px;
+    color:#cbd5e1;
+    line-height:1.8;
+    max-width:620px;
+    margin-top:20px;
+}
+
+/* ================= SEARCH ================= */
+
+.search-wrapper{
+    margin-top:-70px;
+    position:relative;
+    z-index:50;
+}
+
+.search-card{
+    background:white;
+    border-radius:30px;
+    padding:25px;
+    box-shadow:0 30px 80px rgba(0,0,0,0.12);
+}
+
+.search-form{
+    display:flex;
+    gap:16px;
+}
+
+.search-group{
+    flex:1;
+    position:relative;
+}
+
+.search-group i{
+    position:absolute;
+    left:18px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#64748b;
+}
+
+.search-input{
+    width:100%;
+    border:none;
+    background:#f8fafc;
+    border-radius:18px;
+    padding:18px 18px 18px 50px;
+    font-size:15px;
+    outline:none;
+}
+
+.search-input:focus{
+    box-shadow:0 0 0 4px rgba(37,99,235,0.12);
+}
+
+.search-btn{
+    border:none;
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+    color:white;
+    border-radius:18px;
+    padding:0 34px;
+    font-weight:800;
+    transition:0.3s;
+}
+
+.search-btn:hover{
+    transform:translateY(-3px);
+}
+
+/* ================= CATEGORY ================= */
+
+.category-wrapper{
+    display:flex;
+    gap:14px;
+    overflow-x:auto;
+    padding:35px 0 15px;
+}
+
+.category-wrapper::-webkit-scrollbar{
+    display:none;
+}
+
+.category-card{
+    min-width:140px;
+    background:white;
+    border-radius:22px;
+    padding:20px;
+    text-align:center;
+    text-decoration:none;
+    color:#0f172a;
+    box-shadow:0 10px 30px rgba(0,0,0,0.06);
+    transition:0.3s;
+}
+
+.category-card:hover{
+    transform:translateY(-5px);
+    color:#2563eb;
+}
+
+.category-card.active{
+    background:linear-gradient(135deg,#192d58,#172750);
+    color:white;
+}
+
+.category-icon{
+    font-size:28px;
+    margin-bottom:10px;
+}
+
+.category-name{
+    font-size:14px;
+    font-weight:800;
+}
+
+/* ================= SECTION ================= */
+
+.section-header{
+    margin-top:20px;
+    margin-bottom:40px;
+}
+
+.section-title{
+    font-size:40px;
+    font-weight:900;
+    color:#0f172a;
+}
+
+.section-subtitle{
+    color:#64748b;
+    margin-top:8px;
+}
+
+/* ================= SERVICE CARD ================= */
+
+.service-card{
+    background:white;
+    border-radius:32px;
+    overflow:hidden;
+    box-shadow:0 15px 40px rgba(0,0,0,0.08);
+    transition:0.4s;
+    height:100%;
+}
+
+.service-card:hover{
+    transform:translateY(-12px);
+    box-shadow:0 30px 70px rgba(0,0,0,0.12);
+}
+
+/* ================= SERVICE BANNER ================= */
+
+.service-banner{
+    height:240px;
+    background:
+    linear-gradient(135deg,#0f2043,#1d4ed8);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    overflow:hidden;
+}
+
+.service-banner::before{
+    content:'';
+    position:absolute;
+    width:220px;
+    height:220px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.08);
+    top:-80px;
+    right:-60px;
+}
+
+.service-banner::after{
+    content:'';
+    position:absolute;
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.08);
+    bottom:-70px;
+    left:-50px;
+}
+
+.service-icon{
+    width:110px;
+    height:110px;
+    border-radius:30px;
+    background:rgba(255,255,255,0.12);
+    backdrop-filter:blur(10px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-size:50px;
+    position:relative;
+    z-index:2;
+}
+
+.top-badge{
+    position:absolute;
+    top:18px;
+    left:18px;
+    background:white;
+    color:#1a2742;
+    font-size:12px;
+    font-weight:800;
+    padding:8px 15px;
+    border-radius:50px;
+    z-index:2;
+}
+
+.favorite-btn{
+    position:absolute;
+    top:18px;
+    right:18px;
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#ef4444;
+    font-size:15px;
+    z-index:2;
+}
+
+/* ================= CONTENT ================= */
+
+.service-content{
+    padding:28px;
+}
+
+.service-meta{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:14px;
+}
+
+.service-name{
+    font-size:26px;
+    font-weight:900;
+    margin:0;
+}
+
+.rating{
+    font-size:13px;
+    font-weight:700;
+    background:#fef3c7;
+    color:#b45309;
+    padding:7px 12px;
+    border-radius:12px;
+}
+
+.service-desc{
+    color:#64748b;
+    font-size:14px;
+    line-height:1.8;
+    margin-bottom:24px;
+}
+
+/* ================= STATS ================= */
+
+.service-stats{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:24px;
+}
+
+.stat{
+    text-align:center;
+}
+
+.stat-value{
+    font-size:18px;
+    font-weight:900;
+    color:#0f172a;
+}
+
+.stat-label{
+    font-size:12px;
+    color:#64748b;
+}
+
+/* ================= FOOTER ================= */
+
+.service-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+}
+
+.price-area h3{
+    margin:0;
+    font-size:34px;
+    font-weight:900;
+    color:#0f172a;
+}
+
+.price-area span{
+    font-size:13px;
+    color:#16a34a;
+    font-weight:700;
+}
+
+.book-btn{
+    background:linear-gradient(135deg,#0f172a,#1e293b);
+    color:white;
+    text-decoration:none;
+    padding:15px 22px;
+    border-radius:16px;
+    font-size:14px;
+    font-weight:800;
+    transition:0.3s;
+    white-space:nowrap;
+}
+
+.book-btn:hover{
+    transform:scale(1.04);
+    color:white;
+}
+
+/* ================= EMPTY ================= */
+
+.empty-box{
+    background:white;
+    border-radius:30px;
+    padding:90px 20px;
+    text-align:center;
+    box-shadow:0 15px 40px rgba(0,0,0,0.06);
+}
+
+.empty-box i{
+    font-size:55px;
+    color:#94a3b8;
+    margin-bottom:20px;
+}
+
+/* ================= CTA ================= */
+
+.cta-section{
+    margin-top:90px;
+    padding:70px;
+    border-radius:36px;
+    text-align:center;
+    background:
+    linear-gradient(135deg,#20427a,#293758);
+    color:white;
+    position:relative;
+    overflow:hidden;
+}
+
+.cta-section::before{
+    content:'';
+    position:absolute;
+    width:320px;
+    height:320px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.08);
+    top:-120px;
+    right:-80px;
+}
+
+.cta-title{
+    font-size:46px;
+    font-weight:900;
+    position:relative;
+    z-index:2;
+}
+
+.cta-text{
+    margin-top:16px;
+    color:#dbeafe;
+    position:relative;
+    z-index:2;
+}
+
+.cta-btn{
+    display:inline-block;
+    margin-top:30px;
+    background:white;
+    color:#172440;
+    text-decoration:none;
+    padding:17px 34px;
+    border-radius:18px;
+    font-weight:900;
+    transition:0.3s;
+    position:relative;
+    z-index:2;
+}
+
+.cta-btn:hover{
+    transform:translateY(-3px);
+    color:#102b66;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:768px){
+
+    .hero-title{
+        font-size:42px;
+    }
+
+    .search-form{
+        flex-direction:column;
+    }
+
+    .search-btn{
+        padding:18px;
+    }
+
+    .section-title{
+        font-size:32px;
+    }
+
+    .cta-title{
+        font-size:34px;
+    }
+
+    .cta-section{
+        padding:50px 25px;
+    }
+
+    .service-footer{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .book-btn{
+        width:100%;
+        text-align:center;
+    }
+
+}
+
+</style>
+
+<!-- ================= HERO ================= -->
+
+<section class="services-hero">
+
+<div class="container">
+
+<div class="hero-content">
+
+<div class="hero-badge">
+<i class="fa-solid fa-shield-heart"></i>
+Trusted Professionals
+</div>
+
+<h1 class="hero-title">
+Premium Home Services
+At Your Fingertips
+</h1>
+
+<p class="hero-subtitle">
+Book expert electricians, plumbers, cleaners and repair
+professionals with fast response and affordable pricing.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= SEARCH ================= -->
+
+<div class="container search-wrapper">
+
+<div class="search-card">
+
+<form method="GET" class="search-form">
+
+<div class="search-group">
+
+<i class="fa-solid fa-magnifying-glass"></i>
+
+<input type="text"
+       name="q"
+       value="{{ request.GET.q }}"
+       class="search-input"
+       placeholder="Search services...">
+
+</div>
+
+<button type="submit" class="search-btn">
+Search
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+<!-- ================= CATEGORY ================= -->
+
+<div class="container">
+
+<div class="category-wrapper">
+
+<a href="?category=all"
+class="category-card {% if request.GET.category == 'all' or not request.GET.category %}active{% endif %}">
+
+<div class="category-icon">🏠</div>
+<div class="category-name">All Services</div>
+
+</a>
+
+<a href="?category=electrician" class="category-card">
+
+<div class="category-icon">⚡</div>
+<div class="category-name">Electrician</div>
+
+</a>
+
+<a href="?category=plumbing" class="category-card">
+
+<div class="category-icon">🚰</div>
+<div class="category-name">Plumbing</div>
+
+</a>
+
+<a href="?category=cleaning" class="category-card">
+
+<div class="category-icon">🧹</div>
+<div class="category-name">Cleaning</div>
+
+</a>
+
+<a href="?category=repair" class="category-card">
+
+<div class="category-icon">🔧</div>
+<div class="category-name">Repair</div>
+
+</a>
+
+<a href="?category=painting" class="category-card">
+
+<div class="category-icon">🎨</div>
+<div class="category-name">Painting</div>
+
+</a>
+
+</div>
+
+</div>
+
+<!-- ================= SERVICES ================= -->
+
+<div class="container py-5">
+
+<div class="section-header">
+
+<h2 class="section-title">
+Popular Services
+</h2>
+
+<p class="section-subtitle">
+Choose from our top-rated home service professionals
+</p>
+
+</div>
+
+<div class="row g-4">
+
+{% for service in services %}
+
+<div class="col-lg-4 col-md-6">
+
+<div class="service-card">
+
+<!-- ================= BANNER ================= -->
+
+<div class="service-banner">
+
+<div class="top-badge">
+Verified
+</div>
+
+<div class="favorite-btn">
+<i class="fa-solid fa-heart"></i>
+</div>
+
+<div class="service-icon">
+
+{% if service.category == 'electrician' %}
+
+<i class="fa-solid fa-bolt"></i>
+
+{% elif service.category == 'plumbing' %}
+
+<i class="fa-solid fa-faucet-drip"></i>
+
+{% elif service.category == 'cleaning' %}
+
+<i class="fa-solid fa-pump-soap"></i>
+
+{% elif service.category == 'repair' %}
+
+<i class="fa-solid fa-screwdriver-wrench"></i>
+
+{% elif service.category == 'painting' %}
+
+<i class="fa-solid fa-paint-roller"></i>
+
+{% else %}
+
+<i class="fa-solid fa-house"></i>
+
+{% endif %}
+
+</div>
+
+</div>
+
+<!-- ================= CONTENT ================= -->
+
+<div class="service-content">
+
+<div class="service-meta">
+
+<h3 class="service-name">
+{{ service.name }}
+</h3>
+
+<div class="rating">
+⭐ {{ service.rating|default:"4.8" }}
+</div>
+
+</div>
+
+<p class="service-desc">
+{{ service.description|truncatewords:18 }}
+</p>
+
+<!-- ================= STATS ================= -->
+
+<div class="service-stats">
+
+<div class="stat">
+
+<div class="stat-value">
+2k+
+</div>
+
+<div class="stat-label">
+Bookings
+</div>
+
+</div>
+
+<div class="stat">
+
+<div class="stat-value">
+24/7
+</div>
+
+<div class="stat-label">
+Support
+</div>
+
+</div>
+
+<div class="stat">
+
+<div class="stat-value">
+99%
+</div>
+
+<div class="stat-label">
+Satisfied
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= FOOTER ================= -->
+
+<div class="service-footer">
+
+<div class="price-area">
+
+<h3>
+₹{{ service.base_price|default:499 }}
+</h3>
+
+<span>
++ ₹{{ service.price_per_unit|default:100 }}
+per {{ service.unit_type|default:"unit" }}
+</span>
+
+</div>
+
+<a href="/booking/{{ service.id }}/"
+class="book-btn">
+
+Book Now
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% empty %}
+
+<div class="col-12">
+
+<div class="empty-box">
+
+<i class="fa-solid fa-box-open"></i>
+
+<h3>No Services Found</h3>
+
+<p class="text-muted">
+Try searching another keyword or category
+</p>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+<!-- ================= CTA ================= -->
+
+<div class="cta-section">
+
+<h2 class="cta-title">
+Need Instant Home Assistance?
+</h2>
+
+<p class="cta-text">
+Connect with verified experts and book emergency
+home services in minutes.
+</p>
+
+<a href="#" class="cta-btn">
+Book Emergency Service
+</a>
+
+</div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,249 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+
+/* ================= HERO ================= */
+.login-hero{
+    padding:90px 20px;
+    text-align:center;
+    background: radial-gradient(circle at top left,#ffffff,#eef2ff);
+}
+
+.login-hero h1{
+    font-size:48px;
+    font-weight:900;
+}
+
+.login-hero p{
+    color:#666;
+    font-size:18px;
+}
+
+/* ================= WRAPPER ================= */
+.login-wrapper{
+    background:#f8fafc;
+    padding:50px 0;
+}
+
+/* ================= CARD ================= */
+.login-card{
+    background:#fff;
+    border-radius:24px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.10);
+    border:1px solid #eee;
+    overflow:hidden;
+}
+
+/* ================= LEFT ================= */
+.login-side{
+    background:linear-gradient(135deg,#111,#2b2b2b);
+    color:#fff;
+    padding:45px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.login-side h2{
+    font-weight:900;
+    margin-bottom:10px;
+}
+
+.login-side p{
+    color:#cfcfcf;
+    font-size:14px;
+    line-height:1.6;
+}
+
+.login-badge{
+    display:inline-block;
+    background:rgba(255,255,255,0.1);
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12px;
+    margin-bottom:15px;
+}
+
+/* ================= FORM ================= */
+.login-form{
+    padding:45px;
+}
+
+.form-title{
+    font-size:28px;
+    font-weight:900;
+    margin-bottom:5px;
+}
+
+.form-subtitle{
+    color:#666;
+    margin-bottom:25px;
+}
+
+/* ================= INPUT ================= */
+.form-control{
+    border-radius:14px;
+    padding:12px 14px;
+    border:1px solid #e5e7eb;
+    transition:0.3s;
+}
+
+.form-control:focus{
+    border-color:#111;
+    box-shadow:0 0 0 4px rgba(0,0,0,0.05);
+}
+
+/* ================= BUTTON ================= */
+.btn-login{
+    background:linear-gradient(135deg,#111,#333);
+    color:#fff;
+    padding:14px;
+    border-radius:14px;
+    font-weight:900;
+    border:none;
+    width:100%;
+    transition:0.3s;
+}
+
+.btn-login:hover{
+    transform:translateY(-3px);
+    box-shadow:0 18px 40px rgba(0,0,0,0.2);
+}
+
+/* ================= LINKS ================= */
+.login-links{
+    display:flex;
+    justify-content:space-between;
+    font-size:13px;
+    margin-top:10px;
+}
+
+.login-links a{
+    color:#555;
+    text-decoration:none;
+}
+
+.login-links a:hover{
+    color:#111;
+}
+
+/* ================= FOOT NOTE ================= */
+.footer-note{
+    text-align:center;
+    margin-top:18px;
+    font-size:13px;
+    color:#777;
+}
+
+.footer-note a{
+    font-weight:700;
+    color:#111;
+    text-decoration:none;
+}
+
+</style>
+
+<!-- ================= HERO ================= -->
+<section class="login-hero">
+    <h1>Welcome Back</h1>
+    <p>Login to access your Homedo dashboard</p>
+</section>
+
+<!-- ================= LOGIN ================= -->
+<section class="login-wrapper">
+<div class="container">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-9">
+
+            <div class="login-card row g-0">
+
+                <!-- LEFT -->
+                <div class="col-lg-5 login-side">
+
+                    <span class="login-badge">Secure Access</span>
+
+                    <h2>Homedo Portal</h2>
+
+                    <p>
+                        Access your bookings, manage services,
+                        and track your home service requests anytime.
+                    </p>
+
+                    <p>
+                        ✔ Secure Login System<br>
+                        ✔ Fast Dashboard Access<br>
+                        ✔ Trusted Platform
+                    </p>
+
+                </div>
+
+                <!-- RIGHT -->
+                <div class="col-lg-7 login-form">
+
+                    <div class="form-title">Login</div>
+                    <div class="form-subtitle">Enter your credentials</div>
+
+                    <!-- ✅ MESSAGES FIX -->
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="POST">
+                        {% csrf_token %}
+
+                        <!-- ✅ FIXED INPUT (IMPORTANT) -->
+                        <div class="mb-3">
+                            <label>Username or Email</label>
+                            <input type="text"
+                                   name="username"
+                                   class="form-control"
+                                   placeholder="Enter username or email"
+                                   required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Password</label>
+                            <input type="password"
+                                   name="password"
+                                   class="form-control"
+                                   placeholder="Enter password"
+                                   required>
+                        </div>
+
+                        <div class="login-links">
+                            <div>
+                                <input type="checkbox"> Remember me
+                            </div>
+                            <a href="#">Forgot Password?</a>
+                        </div>
+
+                        <button type="submit" class="btn-login mt-3">
+                            Login to Dashboard
+                        </button>
+
+                        <div class="footer-note">
+                            New here? <a href="{% url 'register' %}">Create account</a>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,731 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+/* ================= GLOBAL ================= */
+
+body{
+    background:#f4f7fb;
+    font-family:'Segoe UI',sans-serif;
+    overflow-x:hidden;
+}
+
+/* ================= HERO ================= */
+
+.contact-hero{
+    position:relative;
+    padding:140px 20px 120px;
+    background:
+    linear-gradient(135deg,#111827,#1f2937);
+    color:white;
+    overflow:hidden;
+}
+
+.contact-hero::before{
+    content:'';
+    position:absolute;
+    width:450px;
+    height:450px;
+    background:rgba(255,255,255,0.04);
+    border-radius:50%;
+    top:-120px;
+    right:-120px;
+}
+
+.contact-hero::after{
+    content:'';
+    position:absolute;
+    width:280px;
+    height:280px;
+    background:rgba(255,255,255,0.03);
+    border-radius:50%;
+    bottom:-100px;
+    left:-80px;
+}
+
+.hero-content{
+    position:relative;
+    z-index:2;
+    text-align:center;
+}
+
+.hero-badge{
+    display:inline-block;
+    background:rgba(255,255,255,0.12);
+    padding:10px 22px;
+    border-radius:50px;
+    font-size:13px;
+    font-weight:700;
+    backdrop-filter:blur(10px);
+}
+
+.hero-title{
+    font-size:68px;
+    font-weight:900;
+    margin-top:22px;
+    line-height:1.05;
+    letter-spacing:-2px;
+}
+
+.hero-subtitle{
+    max-width:760px;
+    margin:22px auto 0;
+    color:#d1d5db;
+    font-size:18px;
+    line-height:1.8;
+}
+
+/* ================= FLOAT CARDS ================= */
+
+.contact-floating{
+    margin-top:-70px;
+    position:relative;
+    z-index:10;
+}
+
+.contact-card{
+    background:rgba(255,255,255,0.85);
+    backdrop-filter:blur(18px);
+    border-radius:28px;
+    padding:28px;
+    box-shadow:0 25px 60px rgba(0,0,0,0.1);
+    border:1px solid rgba(255,255,255,0.4);
+    height:100%;
+    transition:0.35s;
+}
+
+.contact-card:hover{
+    transform:translateY(-10px);
+}
+
+.contact-icon{
+    width:72px;
+    height:72px;
+    border-radius:22px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+    linear-gradient(135deg,#111827,#374151);
+    color:white;
+    font-size:28px;
+    margin-bottom:22px;
+}
+
+.contact-card h4{
+    font-size:24px;
+    font-weight:800;
+    margin-bottom:10px;
+}
+
+.contact-card p{
+    color:#6b7280;
+    margin:0;
+    line-height:1.8;
+}
+
+/* ================= SECTION ================= */
+
+.contact-section{
+    padding:110px 0;
+}
+
+.section-title{
+    margin-bottom:50px;
+}
+
+.section-title span{
+    color:#2563eb;
+    font-size:14px;
+    font-weight:700;
+    letter-spacing:1px;
+    text-transform:uppercase;
+}
+
+.section-title h2{
+    font-size:52px;
+    font-weight:900;
+    margin-top:10px;
+}
+
+.section-title p{
+    color:#6b7280;
+    line-height:1.8;
+    margin-top:14px;
+}
+
+/* ================= FORM ================= */
+
+.form-wrapper{
+    background:white;
+    border-radius:36px;
+    padding:50px;
+    box-shadow:0 30px 70px rgba(0,0,0,0.08);
+    border:1px solid #eef2f7;
+}
+
+.form-label{
+    font-weight:700;
+    margin-bottom:10px;
+    color:#111827;
+}
+
+.custom-input{
+    width:100%;
+    border:none;
+    background:#f8fafc;
+    border-radius:18px;
+    padding:16px 18px;
+    font-size:15px;
+    margin-bottom:24px;
+    outline:none;
+    border:2px solid transparent;
+    transition:0.3s;
+}
+
+.custom-input:focus{
+    border-color:#111827;
+    background:white;
+    box-shadow:0 10px 25px rgba(0,0,0,0.05);
+}
+
+textarea.custom-input{
+    resize:none;
+    min-height:160px;
+}
+
+/* BUTTON */
+
+.submit-btn{
+    width:100%;
+    border:none;
+    padding:18px;
+    border-radius:18px;
+    background:
+    linear-gradient(135deg,#111827,#374151);
+    color:white;
+    font-weight:800;
+    font-size:16px;
+    transition:0.3s;
+}
+
+.submit-btn:hover{
+    transform:translateY(-4px);
+}
+
+/* ================= FAQ ================= */
+
+.faq-section{
+    padding-bottom:110px;
+}
+
+.faq-card{
+    background:white;
+    border-radius:26px;
+    padding:18px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.06);
+}
+
+.accordion-item{
+    border:none !important;
+    margin-bottom:14px;
+    border-radius:18px !important;
+    overflow:hidden;
+    background:#f8fafc;
+}
+
+.accordion-button{
+    background:#f8fafc;
+    padding:22px;
+    font-weight:700;
+    font-size:16px;
+    border:none;
+}
+
+.accordion-button:not(.collapsed){
+    background:#111827;
+    color:white;
+}
+
+.accordion-button:focus{
+    box-shadow:none;
+}
+
+.accordion-body{
+    padding:22px;
+    color:#6b7280;
+    line-height:1.8;
+}
+
+/* ================= MAP BOX ================= */
+
+.map-box{
+    background:white;
+    border-radius:32px;
+    overflow:hidden;
+    height:100%;
+    box-shadow:0 25px 60px rgba(0,0,0,0.08);
+}
+
+.map-box iframe{
+    width:100%;
+    height:100%;
+    min-height:500px;
+    border:none;
+}
+
+/* ================= CTA ================= */
+
+.cta-section{
+    margin-top:90px;
+    background:
+    linear-gradient(135deg,#111827,#1f2937);
+    border-radius:40px;
+    padding:90px 40px;
+    text-align:center;
+    color:white;
+    box-shadow:0 30px 70px rgba(0,0,0,0.18);
+}
+
+.cta-title{
+    font-size:54px;
+    font-weight:900;
+}
+
+.cta-text{
+    max-width:720px;
+    margin:22px auto 0;
+    color:#d1d5db;
+    line-height:1.8;
+}
+
+.cta-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    margin-top:35px;
+    background:white;
+    color:#111827;
+    padding:18px 34px;
+    border-radius:18px;
+    text-decoration:none;
+    font-weight:800;
+    transition:0.3s;
+}
+
+.cta-btn:hover{
+    transform:translateY(-4px);
+    color:#111827;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:768px){
+
+    .hero-title{
+        font-size:42px;
+    }
+
+    .section-title h2{
+        font-size:38px;
+    }
+
+    .form-wrapper{
+        padding:28px;
+    }
+
+    .cta-title{
+        font-size:36px;
+    }
+
+}
+
+</style>
+
+<!-- ================= HERO ================= -->
+
+<section class="contact-hero">
+
+<div class="container">
+
+<div class="hero-content">
+
+<span class="hero-badge">
+24/7 Customer Support
+</span>
+
+<h1 class="hero-title">
+Contact Homedo
+</h1>
+
+<p class="hero-subtitle">
+Need help with bookings, support, payments, or professional services?
+Our team is always ready to assist you.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= FLOATING CONTACT ================= -->
+
+<div class="container contact-floating">
+
+<div class="row g-4">
+
+<div class="col-lg-4">
+
+<div class="contact-card">
+
+<div class="contact-icon">
+<i class="fa-solid fa-phone"></i>
+</div>
+
+<h4>Call Us</h4>
+
+<p>
++91 9876543210
+</p>
+
+</div>
+
+</div>
+
+<div class="col-lg-4">
+
+<div class="contact-card">
+
+<div class="contact-icon">
+<i class="fa-solid fa-envelope"></i>
+</div>
+
+<h4>Email Support</h4>
+
+<p>
+homedo@gmail.com
+</p>
+
+</div>
+
+</div>
+
+<div class="col-lg-4">
+
+<div class="contact-card">
+
+<div class="contact-icon">
+<i class="fa-solid fa-location-dot"></i>
+</div>
+
+<h4>Location</h4>
+
+<p>
+Pune, Maharashtra, India
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= CONTACT SECTION ================= -->
+
+<section class="contact-section">
+
+<div class="container">
+
+<div class="row g-5">
+
+<!-- FORM -->
+
+<div class="col-lg-7">
+
+<div class="section-title">
+
+<span>Send Message</span>
+
+<h2>
+Let's Talk
+</h2>
+
+<p>
+Fill out the form and our team will get back to you shortly.
+</p>
+
+</div>
+
+<div class="form-wrapper">
+
+<form method="POST">
+
+{% csrf_token %}
+
+<div class="row">
+
+<div class="col-md-6">
+
+<label class="form-label">
+Full Name
+</label>
+
+<input type="text"
+class="custom-input"
+placeholder="Enter your name"
+required>
+
+</div>
+
+<div class="col-md-6">
+
+<label class="form-label">
+Email Address
+</label>
+
+<input type="email"
+class="custom-input"
+placeholder="Enter your email"
+required>
+
+</div>
+
+</div>
+
+<label class="form-label">
+Subject
+</label>
+
+<input type="text"
+class="custom-input"
+placeholder="Enter subject"
+required>
+
+<label class="form-label">
+Message
+</label>
+
+<textarea class="custom-input"
+placeholder="Write your message..."
+required></textarea>
+
+<button type="submit" class="submit-btn">
+
+Send Message
+<i class="fa-solid fa-paper-plane ms-2"></i>
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+<!-- MAP -->
+
+<div class="col-lg-5">
+
+<div class="map-box">
+
+<iframe
+src="https://maps.google.com/maps?q=Pune&t=&z=13&ie=UTF8&iwloc=&output=embed">
+</iframe>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= FAQ ================= -->
+
+<section class="faq-section">
+
+<div class="container">
+
+<div class="section-title text-center">
+
+<span>Support</span>
+
+<h2>
+Frequently Asked Questions
+</h2>
+
+<p>
+Everything you need to know about Homedo services.
+</p>
+
+</div>
+
+<div class="faq-card">
+
+<div class="accordion" id="faqAccordion">
+
+<!-- FAQ 1 -->
+
+<div class="accordion-item">
+
+<h2 class="accordion-header">
+
+<button class="accordion-button"
+data-bs-toggle="collapse"
+data-bs-target="#faq1">
+
+How do I book a service?
+
+</button>
+
+</h2>
+
+<div id="faq1"
+class="accordion-collapse collapse show"
+data-bs-parent="#faqAccordion">
+
+<div class="accordion-body">
+
+Go to the services page, choose your required service,
+select a suitable time slot, and confirm the booking instantly.
+
+</div>
+
+</div>
+
+</div>
+
+<!-- FAQ 2 -->
+
+<div class="accordion-item">
+
+<h2 class="accordion-header">
+
+<button class="accordion-button collapsed"
+data-bs-toggle="collapse"
+data-bs-target="#faq2">
+
+Are professionals verified?
+
+</button>
+
+</h2>
+
+<div id="faq2"
+class="accordion-collapse collapse"
+data-bs-parent="#faqAccordion">
+
+<div class="accordion-body">
+
+Yes, every professional on Homedo undergoes
+verification and quality checks before joining.
+
+</div>
+
+</div>
+
+</div>
+
+<!-- FAQ 3 -->
+
+<div class="accordion-item">
+
+<h2 class="accordion-header">
+
+<button class="accordion-button collapsed"
+data-bs-toggle="collapse"
+data-bs-target="#faq3">
+
+Which payment methods are available?
+
+</button>
+
+</h2>
+
+<div id="faq3"
+class="accordion-collapse collapse"
+data-bs-parent="#faqAccordion">
+
+<div class="accordion-body">
+
+We support online payments, UPI,
+cards, wallets, and cash on service completion.
+
+</div>
+
+</div>
+
+</div>
+
+<!-- FAQ 4 -->
+
+<div class="accordion-item">
+
+<h2 class="accordion-header">
+
+<button class="accordion-button collapsed"
+data-bs-toggle="collapse"
+data-bs-target="#faq4">
+
+Can I cancel or reschedule bookings?
+
+</button>
+
+</h2>
+
+<div id="faq4"
+class="accordion-collapse collapse"
+data-bs-parent="#faqAccordion">
+
+<div class="accordion-body">
+
+Yes, bookings can be rescheduled or cancelled
+based on availability and cancellation policy.
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- CTA -->
+
+<div class="cta-section">
+
+<h2 class="cta-title">
+Need Instant Home Service?
+</h2>
+
+<p class="cta-text">
+Book verified professionals anytime with Homedo
+and enjoy a seamless service experience.
+</p>
+
+<a href="{% url 'services' %}" class="cta-btn">
+
+Explore Services
+
+<i class="fa-solid fa-arrow-right"></i>
+
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+{% endblock %}

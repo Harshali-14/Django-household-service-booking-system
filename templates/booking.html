@@ -10,15 +10,8 @@
     background: radial-gradient(circle at top left,#ffffff,#eef2ff);
 }
 
-.booking-hero h1{
-    font-size:50px;
-    font-weight:900;
-}
-
-.booking-hero p{
-    color:#666;
-    font-size:17px;
-}
+.booking-hero h1{font-size:50px;font-weight:900;}
+.booking-hero p{color:#666;font-size:17px;}
 
 /* ================= STEPS ================= */
 .steps{
@@ -59,24 +52,13 @@
 }
 
 /* ================= FORM ================= */
-.form-section{
-    padding:45px;
-}
+.form-section{padding:45px;}
 
-.form-title{
-    font-size:28px;
-    font-weight:900;
-    margin-bottom:20px;
-}
+.form-title{font-size:28px;font-weight:900;margin-bottom:20px;}
 
-label{
-    font-weight:600;
-    font-size:13px;
-    color:#333;
-}
+label{font-weight:600;font-size:13px;color:#333;}
 
-/* INPUTS */
-.form-control, .form-select{
+.form-control,.form-select{
     border-radius:12px;
     padding:12px 14px;
     border:1px solid #e5e7eb;
@@ -101,6 +83,18 @@ label{
     font-weight:800;
     border:none;
     width:100%;
+}
+
+.btn-pay{
+    background:linear-gradient(135deg,#1d4ed8,#2563eb);
+    color:#fff;
+    padding:14px;
+    border-radius:14px;
+    font-weight:800;
+    border:none;
+    width:100%;
+    margin-top:12px;
+    cursor:pointer;
 }
 
 /* ================= SIDE ================= */
@@ -133,7 +127,6 @@ label{
 
 <!-- FORM -->
 <section class="container pb-5">
-
 <div class="row justify-content-center">
 <div class="col-lg-10">
 
@@ -144,44 +137,41 @@ label{
 
     <div class="form-title">Booking Details</div>
 
-    <!-- PRICE SHOW -->
     {% if selected_service %}
     <div class="price-box">
         Estimated Price: ₹{{ calculated_price }}
     </div>
     {% endif %}
 
-    <form method="POST">
+    <form method="POST" id="bookingForm">
         {% csrf_token %}
 
-        <!-- AUTO FILL USER -->
+        <!-- SAFE ID HANDLING -->
+        <input type="hidden" name="id"
+               value="{% if selected_service %}{{ selected_service.id }}{% else %}0{% endif %}">
+        <input type="hidden" name="type" value="service">
+
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label>Full Name</label>
-                <input type="text"
-                       name="full_name"
+                <input type="text" name="full_name"
                        class="form-control"
-                       value="{{ user.get_full_name|default:user.username }}"
-                       required>
+                       value="{{ user.get_full_name|default:user.username }}" required>
             </div>
 
             <div class="col-md-6 mb-3">
                 <label>Phone</label>
-                <input type="tel"
-                       name="phone"
+                <input type="tel" name="phone"
                        class="form-control"
-                       value="{{ user.profile.phone|default:'' }}"
-                       required>
+                       value="{{ user.profile.phone|default:'' }}" required>
             </div>
         </div>
 
         <div class="mb-3">
             <label>Email</label>
-            <input type="email"
-                   name="email"
+            <input type="email" name="email"
                    class="form-control"
-                   value="{{ user.email }}"
-                   required>
+                   value="{{ user.email }}" required>
         </div>
 
         <div class="mb-3">
@@ -198,7 +188,7 @@ label{
 
         <textarea name="address" class="form-control" rows="3">
 {{ profile.address|default:'' }}
-</textarea>
+        </textarea>
 
         <div class="row">
             <div class="col-md-6 mb-3">
@@ -212,29 +202,121 @@ label{
             </div>
         </div>
 
-        <button class="btn-book">Confirm Booking</button>
+        <button class="btn-book" type="submit">
+            Confirm Booking (COD)
+        </button>
+
+        <button type="button" class="btn-pay" onclick="payNow()">
+            Pay & Confirm Booking
+        </button>
+
     </form>
 
 </div>
 
 <!-- SIDE -->
 <div class="col-lg-5 side-box">
-
     <h3>Why Homedo?</h3>
-
     <div class="side-item">✔ Verified Professionals</div>
     <div class="side-item">⚡ Fast service</div>
     <div class="side-item">💰 Transparent pricing</div>
     <div class="side-item">⭐ High rating experts</div>
     <div class="side-item">📞 24/7 support</div>
-
-</div>
-
 </div>
 
 </div>
 </div>
-
+</div>
 </section>
 
+<!-- ================= RAZORPAY ================= -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+const csrftoken = getCookie('csrftoken');
+
+function payNow() {
+
+    let form = document.getElementById("bookingForm");
+    let formData = new FormData(form);
+
+    formData.set("id", document.querySelector("input[name='id']").value);
+    formData.set("type", "service");
+
+    fetch("/create-order/", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+            "X-CSRFToken": csrftoken
+        },
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+
+        if (!data.order_id || !data.key || !data.amount) {
+            alert("Payment init failed");
+            console.log(data);
+            return;
+        }
+
+        var options = {
+            key: data.key,
+            amount: data.amount,
+            currency: "INR",
+            name: "Homedo Services",
+            description: "Service Booking Payment",
+            order_id: data.order_id,
+
+            handler: function (response) {
+
+                fetch("/payment-success/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": csrftoken
+                    },
+                    body: JSON.stringify({
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        razorpay_order_id: response.razorpay_order_id,
+                        razorpay_signature: response.razorpay_signature
+                    })
+                })
+                .then(() => {
+                    alert("Payment Successful!");
+                    window.location.href = "/dashboard/";
+                });
+            },
+
+            theme: {
+                color: "#1d4ed8"
+            }
+        };
+
+        let rzp = new Razorpay(options);
+        rzp.open();
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Payment error occurred");
+    });
+}
+</script>
 {% endblock %}

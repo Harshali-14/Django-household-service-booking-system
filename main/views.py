@@ -6,9 +6,13 @@ from .models import Service, Product
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404
-from .models import Profile , Booking
-
-
+from .models import Profile , Booking, Provider
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .utils import client
+from django.conf import settings
+from .models import ContactMessage
+from django.utils import timezone
 def login_required_popup(view_func):
     def wrapper(request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -32,6 +36,15 @@ def about(request):
 
 @login_required(login_url='/login/')
 def contact(request):
+    if request.method == "POST":
+        ContactMessage.objects.create(
+            name=request.POST.get('name'),
+            email=request.POST.get('email'),
+            subject=request.POST.get('subject'),
+            message=request.POST.get('message')
+        )
+        return redirect('contact')  # reload page after submit
+
     return render(request, 'contact.html')
 
 @login_required(login_url='/login/')
@@ -129,51 +142,78 @@ def logout_user(request):
     logout(request)
     return redirect('login')
 
+from django.utils import timezone
+
 @login_required(login_url='/login/')
 def booking(request, id=None):
 
     services = Service.objects.all()
-
     selected_service = None
-    calculated_price = 0
+    profile, _ = Profile.objects.get_or_create(user=request.user)
 
     if id:
         selected_service = Service.objects.get(id=id)
-
-    # AUTO PROFILE
-    profile, created = Profile.objects.get_or_create(user=request.user)
-
-    # PRICE CALCULATION
-    if selected_service:
-        calculated_price = selected_service.base_price
 
     if request.method == "POST":
 
         service_id = request.POST.get("service")
         service = Service.objects.get(id=service_id)
 
-        quantity = 1  # default
-
-        calculated_price = service.base_price + (quantity * service.price_per_unit)
-
-        Booking.objects.create(
+        # ✅ ALWAYS CREATE BOOKING FIRST
+        booking = Booking.objects.create(
             user=request.user,
             service=service,
             user_name=request.POST.get("full_name"),
-            quantity=quantity
+            date=request.POST.get("date") or timezone.now().date(),
+            quantity=1,
+            status="Pending"
         )
+
+        payment_method = request.POST.get("payment_method")
+
+        # COD FLOW
+        if payment_method == "cod":
+            booking.status = "COD Pending"
+            booking.save()
+            messages.success(request, "Booking done with COD")
+            return redirect("dashboard")
+
+        # Razorpay FLOW
+        return redirect("dashboard")  # payment handled separately
 
     return render(request, "booking.html", {
         "services": services,
         "selected_service": selected_service,
-        "calculated_price": calculated_price,
         "user": request.user,
         "profile": profile
     })
-    
+                        
 @login_required(login_url='/login/')
 def dashboard(request):
-    return render(request, 'dashboard.html')
+
+    bookings = Booking.objects.filter(user=request.user).order_by('-id')
+    payments = Payment.objects.filter(user=request.user).order_by('-id')
+
+    total_bookings = bookings.count()
+
+    # ✅ ONLY PRODUCT ORDERS
+    product_orders = payments.filter(
+        payment_type="product",
+        payment_status="paid"
+    ).count()
+
+    # ✅ ONLY PAID TOTAL SPENDING
+    total_spending = sum(
+        p.amount for p in payments if p.payment_status == "paid"
+    )
+
+    return render(request, 'dashboard.html', {
+        "bookings": bookings,
+        "payments": payments,
+        "total_bookings": total_bookings,
+        "product_orders": product_orders,
+        "total_spending": total_spending,
+    })
 
 @login_required(login_url='/login/')
 def profile(request):
@@ -211,3 +251,112 @@ def product(request):
         "plumbing": plumbing,
         "cleaning": cleaning,
     })
+
+
+@login_required
+@csrf_exempt
+def create_order(request):
+
+    try:
+        if request.method != "POST":
+            return JsonResponse({"error": "Invalid method"}, status=400)
+
+        item_id = request.POST.get("id")
+        item_type = request.POST.get("type")
+
+        if not item_id or not item_type:
+            return JsonResponse({"error": "Missing data"}, status=400)
+
+        # SERVICE
+        if item_type == "service":
+            item = Service.objects.filter(id=item_id).first()
+            if not item:
+                return JsonResponse({"error": "Service not found"}, status=404)
+
+            amount = int(item.base_price) * 100
+
+        # PRODUCT
+        elif item_type == "product":
+            item = Product.objects.filter(id=item_id).first()
+            if not item:
+                return JsonResponse({"error": "Product not found"}, status=404)
+
+            amount = int(item.price) * 100
+
+        else:
+            return JsonResponse({"error": "Invalid type"}, status=400)
+
+        order = client.order.create({
+            "amount": amount,
+            "currency": "INR",
+            "payment_capture": 1
+        })
+
+        payment = Payment.objects.create(
+            user=request.user,
+            order_id=order["id"],
+            amount=amount / 100,
+            payment_status="created",
+            payment_type=item_type
+        )
+
+        return JsonResponse({
+            "order_id": order["id"],
+            "amount": amount,
+            "key": settings.RAZORPAY_KEY_ID,
+            "payment_id": payment.id
+        })
+
+    except Exception as e:
+        print("CREATE ORDER ERROR:", e)
+        return JsonResponse({"error": str(e)}, status=500)
+                
+from .models import Payment
+import json
+
+@csrf_exempt
+def payment_success(request):
+
+    if request.method == "POST":
+        data = json.loads(request.body)
+
+        payment_id = data.get("razorpay_payment_id")
+        order_id = data.get("razorpay_order_id")
+        signature = data.get("razorpay_signature")
+
+        try:
+            payment = Payment.objects.get(order_id=order_id)
+
+            payment.payment_id = payment_id
+            payment.signature = signature
+            payment.status = "paid"
+            payment.save()
+
+            # ✅ ALSO UPDATE BOOKING (IMPORTANT FIX)
+            Booking.objects.filter(user=payment.user).update(status="Paid")
+
+            return JsonResponse({"status": "success"})
+
+        except Payment.DoesNotExist:
+            return JsonResponse({"status": "not found"}, status=404)
+
+    return JsonResponse({"error": "invalid method"}, status=400)
+@login_required
+def provider_dashboard(request):
+    try:
+        provider = request.user.provider
+    except Provider.DoesNotExist:
+        provider = None
+
+    bookings = Booking.objects.filter(user=request.user)
+
+    return render(request, 'provider_dashboard.html', {
+        'provider': provider,
+        'bookings': bookings
+    })
+
+def update_booking_status(request, booking_id, status):
+    booking = Booking.objects.get(id=booking_id)
+    booking.status = status
+    booking.save()
+    return redirect('provider_dashboard')

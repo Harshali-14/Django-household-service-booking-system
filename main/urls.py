@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-
+from .views import provider_dashboard, update_booking_status
 urlpatterns = [
 
     path('', views.home, name='home'),
@@ -26,6 +26,15 @@ urlpatterns = [
     path('payment/', views.payment, name='payment'),
     
     path('product/', views.product, name='product'),
+    
+    path("create-order/", views.create_order, name="create_order"),
+    
+    path("payment-success/", views.payment_success, name="payment_success"),
+    
+    path('provider/dashboard/', provider_dashboard, name='provider_dashboard'),
+
+    path('booking/status/<int:booking_id>/<str:status>/', update_booking_status),
+
     
 
 ]

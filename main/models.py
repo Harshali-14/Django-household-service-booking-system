@@ -30,19 +30,33 @@ class Service(models.Model):
     image = models.URLField(blank=True, null=True)
 
 
+from django.db import models
+from django.contrib.auth.models import User
+
+CATEGORY_CHOICES = [
+    ('plumber', 'Plumber'),
+    ('electrician', 'Electrician'),
+    ('cleaning', 'Cleaning'),
+    ('beauty', 'Beauty Service'),
+]
+
 class Provider(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     name = models.CharField(max_length=100)
-    category = models.CharField(max_length=50, choices=Service.CATEGORY_CHOICES)
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
 
     phone = models.CharField(max_length=15)
     experience_years = models.IntegerField(default=0)
     rating = models.FloatField(default=4.0)
     is_available = models.BooleanField(default=True)
 
+    address = models.TextField(blank=True, null=True)
+    profile_pic = models.ImageField(upload_to='providers/', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
     def __str__(self):
-        return self.name
+        return self.user.username
 
 
 class Booking(models.Model):
@@ -66,16 +80,29 @@ class Booking(models.Model):
 
 
 class Payment(models.Model):
-    booking = models.ForeignKey(Booking, on_delete=models.CASCADE)
+    PAYMENT_TYPE = (
+        ("booking", "Booking"),
+        ("product", "Product"),
+    )
 
-    amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    payment_status = models.CharField(max_length=20, default="Pending")
+    order_id = models.CharField(max_length=100, null=True, blank=True)
+    payment_id = models.CharField(max_length=100, null=True, blank=True)
+    signature = models.CharField(max_length=255, null=True, blank=True)
+
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+
+    payment_status = models.CharField(max_length=20, default="created")
+
+    # ⭐ THIS FIXES YOUR CONFUSION
+    payment_type = models.CharField(
+        max_length=20,
+        choices=PAYMENT_TYPE,
+        default="booking"
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return str(self.amount)
     
 from django.db import models
 
@@ -107,6 +134,16 @@ class Product(models.Model):
 
     image = models.URLField(blank=True)
 
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+class ContactMessage(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    subject = models.CharField(max_length=200)
+    message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

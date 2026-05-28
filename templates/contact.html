@@ -466,65 +466,37 @@ Fill out the form and our team will get back to you shortly.
 <div class="form-wrapper">
 
 <form method="POST">
+    {% csrf_token %}
 
-{% csrf_token %}
+    <div class="row">
 
-<div class="row">
+        <div class="col-md-6">
+            <label class="form-label">Full Name</label>
+            <input type="text" name="name" class="custom-input"
+                   placeholder="Enter your name" required>
+        </div>
 
-<div class="col-md-6">
+        <div class="col-md-6">
+            <label class="form-label">Email Address</label>
+            <input type="email" name="email" class="custom-input"
+                   placeholder="Enter your email" required>
+        </div>
 
-<label class="form-label">
-Full Name
-</label>
+    </div>
 
-<input type="text"
-class="custom-input"
-placeholder="Enter your name"
-required>
+    <label class="form-label">Subject</label>
+    <input type="text" name="subject" class="custom-input"
+           placeholder="Enter subject" required>
 
-</div>
+    <label class="form-label">Message</label>
+    <textarea name="message" class="custom-input"
+              placeholder="Write your message..." required></textarea>
 
-<div class="col-md-6">
-
-<label class="form-label">
-Email Address
-</label>
-
-<input type="email"
-class="custom-input"
-placeholder="Enter your email"
-required>
-
-</div>
-
-</div>
-
-<label class="form-label">
-Subject
-</label>
-
-<input type="text"
-class="custom-input"
-placeholder="Enter subject"
-required>
-
-<label class="form-label">
-Message
-</label>
-
-<textarea class="custom-input"
-placeholder="Write your message..."
-required></textarea>
-
-<button type="submit" class="submit-btn">
-
-Send Message
-<i class="fa-solid fa-paper-plane ms-2"></i>
-
-</button>
-
+    <button type="submit" class="submit-btn">
+        Send Message
+        <i class="fa-solid fa-paper-plane ms-2"></i>
+    </button>
 </form>
-
 </div>
 
 </div>

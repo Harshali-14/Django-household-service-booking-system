@@ -1,0 +1,143 @@
+<style>
+/* ===== BOOKINGS DASHBOARD ===== */
+
+.bookings-container{
+    padding:40px 20px;
+    background:#f4f7fb;
+    font-family:'Segoe UI', sans-serif;
+}
+
+.bookings-title{
+    font-size:34px;
+    font-weight:900;
+    margin-bottom:25px;
+    color:#111827;
+}
+
+/* CARD */
+.booking-card{
+    background:white;
+    border-radius:20px;
+    padding:20px;
+    margin-bottom:18px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.06);
+    transition:0.3s;
+    border:1px solid #eef2f7;
+}
+
+.booking-card:hover{
+    transform:translateY(-5px);
+}
+
+/* HEADER */
+.booking-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+}
+
+.booking-header h4{
+    font-size:20px;
+    font-weight:800;
+    margin:0;
+    color:#111827;
+}
+
+/* BADGE */
+.status{
+    padding:6px 14px;
+    border-radius:50px;
+    font-size:12px;
+    font-weight:700;
+    text-transform:capitalize;
+}
+
+.status.pending{background:#fef3c7;color:#92400e;}
+.status.accepted{background:#dbeafe;color:#1e40af;}
+.status.completed{background:#d1fae5;color:#065f46;}
+.status.cancelled{background:#fee2e2;color:#991b1b;}
+
+/* INFO */
+.booking-info p{
+    margin:6px 0;
+    color:#6b7280;
+    font-size:14px;
+}
+
+/* BUTTONS */
+.actions{
+    margin-top:15px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    padding:10px 16px;
+    border-radius:12px;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:700;
+    transition:0.3s;
+    display:inline-block;
+}
+
+.btn-accept{
+    background:#16a34a;
+    color:white;
+}
+.btn-accept:hover{background:#15803d;}
+
+.btn-complete{
+    background:#2563eb;
+    color:white;
+}
+.btn-complete:hover{background:#1d4ed8;}
+
+.btn-cancel{
+    background:#ef4444;
+    color:white;
+}
+.btn-cancel:hover{background:#dc2626;}
+
+.empty{
+    text-align:center;
+    color:#6b7280;
+    margin-top:40px;
+    font-size:16px;
+}
+</style>
+
+<div class="bookings-container">
+
+    <h2 class="bookings-title">My Bookings</h2>
+
+    {% for b in bookings %}
+    <div class="booking-card">
+
+        <div class="booking-header">
+            <h4>{{ b.service_name }}</h4>
+
+            <span class="status {{ b.status }}">
+                {{ b.status }}
+            </span>
+        </div>
+
+        <div class="booking-info">
+            <p><strong>User:</strong> {{ b.user.username }}</p>
+            <p><strong>Date:</strong> {{ b.booking_date }}</p>
+        </div>
+
+        <div class="actions">
+            <a href="/booking/status/{{ b.id }}/accepted/" class="btn btn-accept">Accept</a>
+            <a href="/booking/status/{{ b.id }}/completed/" class="btn btn-complete">Complete</a>
+            <a href="/booking/status/{{ b.id }}/cancelled/" class="btn btn-cancel">Cancel</a>
+        </div>
+
+    </div>
+    {% empty %}
+    <p class="empty">No bookings assigned yet.</p>
+    {% endfor %}
+
+</div>

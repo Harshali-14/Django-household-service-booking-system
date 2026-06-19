@@ -113,9 +113,9 @@ Features include:
 ### Clone Repository
 
 ```bash
-git clone https://github.com/Harshali-14/Homedo-home-service-booking.git
+git clone https://github.com/Harshali-14/Django-household-service-booking-system.git
 
-cd Homedo-home-service-booking
+cdDjango-household-service-booking-system
 ```
 
 ### Create Virtual Environment

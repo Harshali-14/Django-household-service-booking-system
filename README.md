@@ -203,7 +203,7 @@ http://127.0.0.1:8000/
 
 ### Contact Page
 
-![Contact Page](assets/screenshots/homedo_contact.png)
+![Contact Page](assests/screenshots/homedo_contact.png)
 
 ---
 
